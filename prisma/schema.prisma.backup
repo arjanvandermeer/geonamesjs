@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model admin1codesascii {
+  code       String  @id @db.Char(20)
+  name       String?
+  name_ascii String?
+  geoname_id Int?
+}
+
+model admin2codesascii {
+  code       String  @id @db.Char(80)
+  name       String?
+  name_ascii String?
+  geoname_id Int?
+}
+
+model alternatename {
+  id                Int      @id(map: "pk_alternatenameid")
+  geoname_id        Int?
+  iso_lang          String?
+  alternate_name    String?
+  is_preferred_name Boolean?
+  is_short_name     Boolean?
+  is_colloquial     Boolean?
+  is_historic       Boolean?
+  geoname           geoname? @relation(fields: [geoname_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_geonameid")
+
+  @@index([geoname_id], map: "index_alternatename_geonameid")
+}
+
+model continentcodes {
+  code       String  @id @db.Char(2)
+  name       String?
+  geoname_id Int?
+}
+
+model countryinfo {
+  iso_alpha2           String   @id(map: "pk_iso_alpha2") @db.Char(2)
+  iso_alpha3           String?  @db.Char(3)
+  iso_numeric          Int?
+  fips_code            String?
+  country              String?
+  capital              String?
+  area                 Float?
+  population           Int?
+  continent            String?  @db.Char(2)
+  tld                  String?
+  currency_code        String?  @db.Char(3)
+  currency_name        String?
+  phone                String?
+  postal               String?
+  postal_regex         String?
+  languages            String?
+  geoname_id           Int?
+  neighbours           String?
+  equivalent_fips_code String?
+  geoname              geoname? @relation(fields: [geoname_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_geonameid")
+
+  @@index([geoname_id], map: "index_countryinfo_geonameid")
+}
+
+model featurecodes {
+  code        String  @id @db.Char(7)
+  name        String?
+  description String?
+}
+
+model geoname {
+  id              Int                      @id(map: "pk_geonameid")
+  name            String?
+  ascii_name      String?
+  alternate_names String?
+  latitude        Float?
+  longitude       Float?
+  fclass          String?                  @db.Char(1)
+  fcode           String?                  @db.Char(10)
+  country         String?                  @db.Char(2)
+  cc2             String?
+  admin1          String?
+  admin2          String?
+  admin3          String?
+  admin4          String?
+  population      BigInt?
+  elevation       Int?
+  gtopo30         Int?
+  timezone        String?
+  modified_date   DateTime?                @db.Date
+  search_vector   Unsupported("tsvector")?
+  alternatename   alternatename[]
+  countryinfo     countryinfo[]
+
+  @@index([search_vector])
+}
+
+model iso_languagecodes {
+  iso_639_3     String  @id @db.Char(4)
+  iso_639_2     String?
+  iso_639_1     String?
+  language_name String?
+}
+
+model postalcodes {
+  country_code String  @db.Char(2)
+  postal_code  String
+  place_name   String?
+  admin1_name  String?
+  admin1_code  String?
+  admin2_name  String?
+  admin2_code  String?
+  admin3_name  String?
+  admin3_code  String?
+  latitude     Float?
+  longitude    Float?
+  accuracy     Int?    @db.SmallInt
+
+  @@id([country_code, postal_code])
+}
+
+model timezones {
+  id           String   @id
+  country_code String?
+  gmt_offset   Decimal? @db.Decimal(3, 1)
+  dst_offset   Decimal? @db.Decimal(3, 1)
+  raw_offset   Decimal? @db.Decimal(3, 1)
+}

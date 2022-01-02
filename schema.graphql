@@ -1,0 +1,89 @@
+type Point {
+  Latitude: Float!
+  Longitude: Float!
+}
+
+type PointList {
+  Points: [Point!]!
+}
+
+type Polygon {
+  Coordinates: [PointList!]!
+}
+
+type MultiPolygon {
+  Coordinates: [Polygon!]!
+}
+
+type Currency
+{
+    id: ID!
+    name: String!
+}
+type Timezone
+{
+    id: ID!
+#    country_code: String!
+    gmt_offset: String!
+}
+type Language
+{
+    id: ID!
+    name: String!
+}
+type Location
+{
+    id: ID!
+    name: String!
+    adminregion: AdminRegion
+    country: Country
+    population:String
+    elevation:Int
+    timezone:Timezone
+    type: String
+}
+type AdminRegion
+{
+    id: ID
+    name: String
+    country: Country!
+}
+type Country
+{
+    id: ID!
+    name: String!
+    continent: Continent
+    capital: String
+    area: Float
+    population: String
+    languages: [Language]
+    # TODO: 
+    # Timezone
+}
+type Continent {
+    id: ID!
+    name: String!
+}
+
+type Query {
+    adminregion(id: ID!): AdminRegion
+    adminregions(country: ID!): [AdminRegion]
+
+    location(id:ID): Location!
+    findlocations(country:ID, name:String): [Location]
+
+    continents: [Continent!]
+    continent(id: ID!): Continent!
+
+    countries: [Country!]
+    country(id: ID!): Country!
+
+    currencies:[Currency]!
+    currency(id: ID!): Currency
+
+    languages:[Language]!
+    language(id: ID!): Language
+
+    timezones:[Timezone]!
+    timezone(id: ID!): Timezone
+}
