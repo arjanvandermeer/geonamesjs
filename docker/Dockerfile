@@ -1,4 +1,4 @@
-FROM postgres
+FROM postgis/postgis
 
 RUN apt-get update && apt-get dist-upgrade -y
 RUN apt-get update && apt-get install -y wget unzip postgresql-contrib

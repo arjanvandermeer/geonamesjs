@@ -46,6 +46,12 @@ const Location = {
       }
     });
     return featurecode.name;
+  },
+  position:(parent, args, context, info) => {
+    return {
+      latitude: parent.latitude, 
+      longitude: parent.longitude
+    }
   }
 }
 const Continent = {
@@ -92,7 +98,12 @@ const Language = {
   id: (parent) => parent.iso_639_3.trim().toLowerCase(),
   name: (parent) => parent.language_name,
 }
-
+const Point = {
+ // latitude: () => 55.0,
+ // longitude: () => 55.0
+  // latitude
+  // longitude
+}
 const Timezone = {
 //  id: (parent) => parent.id,
  // country_code: (parent) => parent.country_code,
@@ -103,11 +114,12 @@ const Timezone = {
 
 const resolvers = {
   AdminRegion,
-  Location,
   Continent,
   Country,
   Currency, 
   Language,
+  Location,
+  Point,
   Timezone,
   Query: {
     adminregion: async(parent, args, context, info) => {

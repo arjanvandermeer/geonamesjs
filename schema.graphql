@@ -1,18 +1,18 @@
 type Point {
-  Latitude: Float!
-  Longitude: Float!
+  latitude: Float!
+  longitude: Float!
 }
 
 type PointList {
-  Points: [Point!]!
+  points: [Point!]!
 }
 
 type Polygon {
-  Coordinates: [PointList!]!
+  coordinates: [PointList!]!
 }
 
 type MultiPolygon {
-  Coordinates: [Polygon!]!
+  coordinates: [Polygon!]!
 }
 
 type Currency
@@ -41,6 +41,7 @@ type Location
     elevation:Int
     timezone:Timezone
     type: String
+    position: Point
 }
 type AdminRegion
 {
