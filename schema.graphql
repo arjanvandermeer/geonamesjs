@@ -71,7 +71,7 @@ type Query {
     adminregions(country: ID!): [AdminRegion]
 
     location(id:ID): Location!
-    findlocations(country:ID, name:String): [Location]
+    findlocations(country:ID, name:String, populationover:Int, populationunder:Int): [Location]
 
     continents: [Continent!]
     continent(id: ID!): Continent!

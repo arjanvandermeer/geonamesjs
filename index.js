@@ -142,7 +142,8 @@ const resolvers = {
       return await prisma.geoname.findFirst({
         where: {
           id: parseInt(args.id),
-          population: 
+          // ...(myCondition ? {express: true} : {})
+          population:
           {
             gt: 0,
           }
@@ -156,12 +157,22 @@ const resolvers = {
           // first  [take in prisma]
           // offset [skip in prismma]
           where: {
-          country: args.country.toUpperCase(),
-          population: 
-          {
-            gt: 0,
+          country: {
+            equals: args.country.toUpperCase(),
+            mode: 'insensitive'
           },
-          name: 
+          //...(compareValue > 10 && {propertyForGreaterThan10: 'foo'}),
+          ...(args.populationover && {population:
+            {
+              gt: args.populationover,
+            }
+          }),
+          ...(args.populationunder && {population:
+            {
+              lt: args.populationunder,
+            }
+          }),
+         name: 
           {
             contains: args.name,
             mode: 'insensitive'
